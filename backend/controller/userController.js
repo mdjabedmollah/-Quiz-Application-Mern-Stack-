@@ -8,7 +8,7 @@ import "dotenv/config";
 
 const jwt_scret = process.env.JWT_SCRET;
 
-const register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -17,20 +17,20 @@ const register = async (req, res) => {
         message: "All field are required",
       });
     }
-    if (validator.isEmail(email)) {
+    if (!validator.isEmail(email)) {
       return res.status(400).json({
         success: false,
         message: "Invalid email",
       });
     }
-    const exist = await User.find({ email }).lean();
+    const exist = await User.findOne({ email }).lean();
     if (exist) {
       return res.status(409).json({
         success: false,
         message: "User is already exist ",
       });
     }
-    const newId = await mongoose.Types.ObjectId();
+    const newId = new mongoose.Types.ObjectId();
     const hashedPassword = await bcrypt.hash(password,10);
     const newUser = new User({
       _id: newId,
@@ -85,7 +85,7 @@ export const login=async(req,res)=>{
     }
 
     const isMatch=await bcrypt.compare(password,user.password)
-    if(isMatch){
+    if(!isMatch){
        return res.status(401).json({
         success: false,
         message: "Invalid email or password ",

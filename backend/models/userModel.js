@@ -16,8 +16,7 @@ const userChema = new mongoose.Schema({
     password:{
         type:String,
         required:true
-    }
-},{
-    timestamps:true,
-})
-export default mongoose.model.User || mongoose.Schema("User",userChema)
+    },
+
+},{timestamps:true})
+export default mongoose.models.User || mongoose.model("User",userChema)
