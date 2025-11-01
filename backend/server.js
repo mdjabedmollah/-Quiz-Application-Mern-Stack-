@@ -3,6 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import { connectionDb } from './config/db.js'
 import userRouter from './routers/userRoute.js'
+import resulRouter from './routers/resultRoute.js'
 const app=express()
 const port=4000
 
@@ -14,6 +15,10 @@ app.use(express.urlencoded({extended:true}))
 connectionDb()
 // Routes
 app.use('/api/auth',userRouter)
+app.use('/api/result',resulRouter)
+
+
+
 app.get('/',(req,res)=>{
     res.send("Api working")
 })
